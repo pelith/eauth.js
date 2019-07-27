@@ -27,14 +27,14 @@ class Eauth {
         if (typeof web3 !== 'undefined') {
             console.log('web3 is detected.')
         } else {
-            return alert('No web3 detected. Please install metamask')
+            return alert('No web3 detected.')
         }
 
         if (web3.currentProvider.enable) {
             web3.currentProvider.enable()
                 .then(() => {
-                    if (web3.currentProvider.isMetaMask === true && web3.eth.accounts[0] === undefined) {
-                        return alert('Please login metamask first.')
+                    if (web3.eth.accounts[0] === undefined) {
+                        return alert('Please login your wallet extension first.')
                     }
                     this.authStart(web3, callback)
                 })
@@ -62,7 +62,7 @@ class Eauth {
                 message = res
             }
 
-            // Call metamask to sign
+            // Call wallet extension to sign
             const from = _web3.eth.accounts[0]
             const params = [data, from]
             _web3.currentProvider.sendAsync({
