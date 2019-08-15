@@ -116,9 +116,17 @@ class Eauth {
         .then(res => {
             let data = ''
             let message = ''
-            let method = 'personal_sign'
-            data = '0x' + Array.from(res).map(x => x.charCodeAt(0).toString(16)).join('')
-            message = res
+            let method = 'eth_signTypedData'
+
+            try {
+                res = JSON.parse(res)
+                data = res
+                message = res[1].value
+            } catch (e) {
+                method = 'personal_sign'
+                data = '0x' + Array.from(res).map(x => x.charCodeAt(0).toString(16)).join('')
+                message = res
+            }
 
             // Call wallet extension to sign
             const from = _web3.eth.accounts[0]
