@@ -109,6 +109,15 @@ class Eauth {
         }
     }
 
+    contractFortmaticLogin(contractAddr, callback = () => { window.location.reload() }) {
+        const fm = new Fortmatic('pk_live_CC75CEEE7D7E8630')
+        const fortmaticWeb3 = new Web3(fm.getProvider())
+        fortmaticWeb3.currentProvider.enable()
+            .then(() => {
+                this.walletValidation(fortmaticWeb3, contractAddr, callback)
+            })
+    }
+
     walletValidation(_web3, contractAddr, callback) {
         return fetch(this.CONTRACT_AUTH_ROUTE + '/' + contractAddr, { method: 'get' }).then(res => {
             return res.text()
