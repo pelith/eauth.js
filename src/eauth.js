@@ -9,6 +9,7 @@ class Eauth {
         this.CONTRACT_AUTH_ROUTE = options.CONTRACT_AUTH_ROUTE // domain + '/routeName'
         this.REDIRECT_URI = options.REDIRECT_URI
         this.AUTH_RESPONSE = null
+        this.PREFIX = options.PREFIX ? options.PREFIX : ''
     }
 
     oauthLogin() {
@@ -50,17 +51,19 @@ class Eauth {
         })
         .then(res => {
             let data = ''
-            let message = ''
+            let message = null
             let method = 'eth_signTypedData'
 
             try {
                 res = JSON.parse(res)
-                data = res
                 message = res[1].value
+                data = res
+                data[1].value = this.PREFIX + res[1].value
             } catch (e) {
-                method = 'personal_sign'
-                data = '0x' + Array.from(res).map(x => x.charCodeAt(0).toString(16)).join('')
                 message = res
+                const prefixedRes = this.PREFIX + res
+                method = 'personal_sign'
+                data = prefixedRes
             }
 
             // Call wallet extension to sign
@@ -124,17 +127,19 @@ class Eauth {
         })
         .then(res => {
             let data = ''
-            let message = ''
+            let message = null
             let method = 'eth_signTypedData'
 
             try {
                 res = JSON.parse(res)
-                data = res
                 message = res[1].value
+                data = res
+                data[1].value = this.PREFIX + res[1].value
             } catch (e) {
-                method = 'personal_sign'
-                data = '0x' + Array.from(res).map(x => x.charCodeAt(0).toString(16)).join('')
                 message = res
+                const prefixedRes = this.PREFIX + res
+                method = 'personal_sign'
+                data = prefixedRes
             }
 
             // Call wallet extension to sign
