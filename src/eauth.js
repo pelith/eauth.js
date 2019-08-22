@@ -168,6 +168,27 @@ class Eauth {
             })
         })
     }
+
+    getMessage(contractAddr) {
+        return fetch(this.CONTRACT_AUTH_ROUTE + '/' + contractAddr, { method: 'get' }).then(res => {
+            return res.text()
+        })
+        .then(message => {
+            return this.PREFIX + message
+        })
+    }
+
+    checkIsValid(message, signature, callback) {
+        const token = message.replace(this.PREFIX, '')
+        return fetch(this.CONTRACT_AUTH_ROUTE + '/' + token + '/' + signature, { method: 'post' }).then(res => {
+            return res.text()
+        })
+        .then((res) => {
+            this.AUTH_RESPONSE = res
+            console.log(res)
+            callback()
+        })
+    }
 }
 
 
