@@ -184,7 +184,6 @@ class Eauth {
         })
         .then((res) => {
             this.AUTH_RESPONSE = res
-            console.log(res)
             callback()
         })
     }
