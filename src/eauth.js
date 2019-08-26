@@ -81,7 +81,7 @@ class Eauth {
 
                 if (message !== null && signature !== null) {
                     return fetch(this.AUTH_ROUTE + '/' + message + '/' + signature, { method: 'post' })
-                    .then((res) => { return res.json() })
+                    .then((res) => { return res.text() })
                     .then((res) => {
                         this.AUTH_RESPONSE = res
                         callback()
@@ -160,7 +160,6 @@ class Eauth {
                     .then((res) => { return res.text() })
                     .then((res) => {
                         this.AUTH_RESPONSE = res
-                        console.log(res)
                         callback()
                     })
                 }
