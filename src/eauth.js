@@ -35,9 +35,6 @@ class Eauth {
         if (web3.currentProvider.enable) {
             web3.currentProvider.enable()
                 .then(() => {
-                    if (web3.eth.accounts[0] === undefined) {
-                        return alert('Please login your wallet extension first.')
-                    }
                     this.authStart(web3, callback)
                 })
         } else if (web3.eth.accounts[0]) {
@@ -102,9 +99,6 @@ class Eauth {
         if (web3.currentProvider.enable) {
             web3.currentProvider.enable()
                 .then(() => {
-                    if (web3.eth.accounts[0] === undefined) {
-                        return alert('Please login your wallet extension first.')
-                    }
                     this.walletValidation(web3, contractAddr, callback)
                 })
         } else if (web3.eth.accounts[0]) {
