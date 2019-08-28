@@ -83,6 +83,7 @@ class Eauth {
                         this.AUTH_RESPONSE = res
                         callback()
                     })
+                    .catch((err) => { callback() })
                 }
                 return console.error('Missing arguments')
             })
@@ -156,6 +157,7 @@ class Eauth {
                         this.AUTH_RESPONSE = res
                         callback()
                     })
+                    .catch((err) => { callback() })
                 }
                 return console.error('Missing arguments')
             })
@@ -180,6 +182,7 @@ class Eauth {
             this.AUTH_RESPONSE = res
             callback()
         })
+        .catch((err) => { callback() })
     }
 }
 
