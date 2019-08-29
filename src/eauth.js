@@ -47,6 +47,10 @@ class Eauth {
     }
 
     authStart(_web3, callback) {
+        if (!/^(0x)?[0-9a-f]{40}$/i.test(_web3.eth.accounts[0])) {
+            return alert('Wallet not detected.')
+        }
+
         return fetch(this.AUTH_ROUTE + '/' + _web3.eth.accounts[0], { method: 'get' }).then(res => {
             return res.text()
         })
@@ -125,6 +129,10 @@ class Eauth {
     }
 
     walletValidation(_web3, contractAddr, callback) {
+        if (!/^(0x)?[0-9a-f]{40}$/i.test(contractAddr)) {
+            return alert('Not a valid address.')
+        }
+        
         return fetch(this.CONTRACT_AUTH_ROUTE + '/' + contractAddr, { method: 'get' }).then(res => {
             return res.text()
         })
@@ -173,6 +181,10 @@ class Eauth {
     }
 
     getMessage(contractAddr) {
+        if (!/^(0x)?[0-9a-f]{40}$/i.test(contractAddr)) {
+            return alert('Not a valid address.')
+        }
+        
         return fetch(this.CONTRACT_AUTH_ROUTE + '/' + contractAddr, { method: 'get' }).then(res => {
             return res.text()
         })
