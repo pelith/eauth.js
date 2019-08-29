@@ -35,7 +35,11 @@ class Eauth {
         if (web3.currentProvider.enable) {
             web3.currentProvider.enable()
                 .then(() => {
-                    this.authStart(web3, callback)
+                    if (web3.eth.accounts[0]) {
+                        this.authStart(web3, callback)
+                    } else {
+                        setTimeout(this.authStart(web3, callback), 1000)
+                    }
                 })
         } else if (web3.eth.accounts[0]) {
             this.authStart(web3, callback)
@@ -100,7 +104,11 @@ class Eauth {
         if (web3.currentProvider.enable) {
             web3.currentProvider.enable()
                 .then(() => {
-                    this.walletValidation(web3, contractAddr, callback)
+                    if (web3.eth.accounts[0]) {
+                        this.walletValidation(web3, contractAddr, callback)
+                    } else {
+                        setTimeout(this.walletValidation(web3, contractAddr, callback), 1000)
+                    }
                 })
         } else if (web3.eth.accounts[0]) {
             this.walletValidation(web3, contractAddr, callback)
