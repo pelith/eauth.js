@@ -16,24 +16,24 @@ class Eauth {
         window.location = `${this.OAUTH_URL}?client_id=${this.OAUTH_CLIENT_ID}&redirect_uri=${this.OAUTH_REDIRECT_URI}&response_type=code&state=${this.OAUTH_STATE}`
     }
 
-    async fortmaticLogin(callback = () => { window.location.reload() }) {
+    fortmaticLogin(callback = () => { window.location.reload() }) {
         const fm = new Fortmatic('pk_live_CC75CEEE7D7E8630')
         const fortmaticWeb3 = new Web3(fm.getProvider())
-        await fortmaticWeb3.currentProvider.enable()
-        .then(async (accounts) => {
+        fortmaticWeb3.currentProvider.enable()
+        .then((accounts) => {
             this.authStart(fortmaticWeb3, accounts[0], callback)
         })
     }
 
-    async ethLogin(callback = () => { window.location.reload() }) {
+    ethLogin(callback = () => { window.location.reload() }) {
         if (typeof web3 !== 'undefined') {
             console.log('web3 is detected.')
         } else {
             return alert('No web3 detected.')
         }
 
-        await web3.currentProvider.enable()
-        .then(async (accounts) => {
+        web3.currentProvider.enable()
+        .then((accounts) => {
             this.authStart(web3, accounts[0], callback)
         })
     }
@@ -71,7 +71,7 @@ class Eauth {
                 id: 1,
                 method,
                 params,
-            }, async (err, result) => {
+            }, (err, result) => {
                 if (err) return console.error(err)
                 if (result.error) return console.error(result.error)
 
@@ -91,24 +91,24 @@ class Eauth {
         })
     }
 
-    async contractEthLogin(contractAddr, callback = () => { window.location.reload() }) {
+    contractEthLogin(contractAddr, callback = () => { window.location.reload() }) {
         if (typeof web3 !== 'undefined') {
             console.log('web3 is detected.')
         } else {
             return alert('No web3 detected.')
         }
 
-        await web3.currentProvider.enable()
+        web3.currentProvider.enable()
         .then((accounts) => {
             this.walletValidation(web3, contractAddr, accounts[0], callback)
         })
     }
 
-    async contractFortmaticLogin(contractAddr, callback = () => { window.location.reload() }) {
+    contractFortmaticLogin(contractAddr, callback = () => { window.location.reload() }) {
         const fm = new Fortmatic('pk_live_CC75CEEE7D7E8630')
         const fortmaticWeb3 = new Web3(fm.getProvider())
-        await fortmaticWeb3.currentProvider.enable()
-        .then(async (accounts) => {
+        fortmaticWeb3.currentProvider.enable()
+        .then((accounts) => {
             this.walletValidation(fortmaticWeb3, contractAddr, accounts[0], callback)
         })
     }
@@ -146,7 +146,7 @@ class Eauth {
                 id: 1,
                 method,
                 params,
-            }, async (err, result) => {
+            }, (err, result) => {
                 if (err) return console.error(err)
                 if (result.error) return console.error(result.error)
 
