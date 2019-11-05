@@ -9,6 +9,7 @@ class WalletConnector {
       this.PREFIX = _prefix
       callback = _callback
       this.accounts = null
+      this.CONTRACT_ADDR = null
       // Create a walletConnector
       this.walletConnector = new WalletConnect({
         bridge: "https://bridge.walletconnect.org" // Required
@@ -48,7 +49,8 @@ class WalletConnector {
       })
     }
 
-    loginWithConnector() {
+    loginWithConnector(contractAddr = null) {
+      this.CONTRACT_ADDR = contractAddr
       if (!this.walletConnector.connected) {
           this.walletConnector.createSession().then(() => {
               const uri = this.walletConnector.uri
@@ -62,8 +64,8 @@ class WalletConnector {
     }
 
     signPersonalMessage() {
-      console.log(this.accounts[0])
-      return fetch(this.AUTH_ROUTE + '/' + this.accounts[0], { headers: { 'user-target': 'WalletConnect' }, method: 'get' }).then(res => {
+      const address = this.CONTRACT_ADDR ? this.CONTRACT_ADDR : this.accounts[0]
+      return fetch(this.AUTH_ROUTE + '/' + address, { headers: { 'user-target': 'WalletConnect' }, method: 'get' }).then(res => {
           return res.text()
       })
       .then(message => {
@@ -81,6 +83,7 @@ class WalletConnector {
                 return fetch(this.AUTH_ROUTE + '/' + message + '/' + signature, { headers: { 'user-target': 'WalletConnect' }, method: 'post' })
                 .then((res) => { return res.text() })
                 .then((res) => {
+                    this.walletConnector.killSession()
                     callback()
                 })
                 .catch((err) => { callback() })

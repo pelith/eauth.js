@@ -200,6 +200,11 @@ class Eauth {
         const walletConnector = new WalletConnector(this.AUTH_ROUTE, this.PREFIX, callback)
         walletConnector.loginWithConnector()
     }
+
+    contractWalletConnect(contractAddr, callback = () => { window.location.reload() }) {
+        const walletConnector = new WalletConnector(this.CONTRACT_AUTH_ROUTE, this.PREFIX, callback)
+        walletConnector.loginWithConnector(contractAddr)
+    }
 }
 
 
