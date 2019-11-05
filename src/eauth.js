@@ -1,3 +1,5 @@
+import WalletConnector from './walletConnector'
+
 class Eauth {
     constructor(options) {
         this.OAUTH_CLIENT_ID = options.OAUTH_CLIENT_ID
@@ -192,6 +194,11 @@ class Eauth {
             callback()
         })
         .catch((err) => { callback() })
+    }
+
+    walletConnect(callback = () => { window.location.reload() }) {
+        const walletConnector = new WalletConnector(this.AUTH_ROUTE, this.PREFIX, callback)
+        walletConnector.loginWithConnector()
     }
 }
 
