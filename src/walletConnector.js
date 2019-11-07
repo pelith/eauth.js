@@ -51,6 +51,9 @@ class WalletConnector {
 
     loginWithConnector(contractAddr = null) {
       this.CONTRACT_ADDR = contractAddr
+      if (!this.accounts)
+        this.walletConnector.killSession()
+
       if (!this.walletConnector.connected) {
           this.walletConnector.createSession().then(() => {
               const uri = this.walletConnector.uri
@@ -92,6 +95,7 @@ class WalletConnector {
           })
           .catch(error => {
             // Error returned when rejected
+            this.walletConnector.killSession()
             console.error(error)
           })
       })
