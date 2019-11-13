@@ -16,6 +16,15 @@ class Eauth {
         window.location = `${this.OAUTH_URL}?client_id=${this.OAUTH_CLIENT_ID}&redirect_uri=${this.OAUTH_REDIRECT_URI}&response_type=code&state=${this.OAUTH_STATE}`
     }
 
+    authereumLogin(callback = () => { window.location.reload() }) {
+        const authereum = new Authereum('mainnet')
+        const authereumWeb3 = new Web3(authereum.getProvider())
+        authereumWeb3.currentProvider.enable()
+        .then((accounts) => {
+            this.authStart(authereumWeb3, accounts[0], callback)
+        })
+    }
+
     fortmaticLogin(callback = () => { window.location.reload() }) {
         const fm = new Fortmatic('pk_live_CC75CEEE7D7E8630')
         const fortmaticWeb3 = new Web3(fm.getProvider())
@@ -104,6 +113,15 @@ class Eauth {
         })
     }
 
+    contractAuthereumLogin(contractAddr, callback = () => { window.location.reload() }) {
+        const authereum = new Authereum('mainnet')
+        const authereumWeb3 = new Web3(authereum.getProvider())
+        authereumWeb3.currentProvider.enable()
+        .then((accounts) => {
+            this.walletValidation(authereumWeb3, contractAddr, accounts[0], callback)
+        })
+    }
+
     contractFortmaticLogin(contractAddr, callback = () => { window.location.reload() }) {
         const fm = new Fortmatic('pk_live_CC75CEEE7D7E8630')
         const fortmaticWeb3 = new Web3(fm.getProvider())
@@ -117,7 +135,7 @@ class Eauth {
         if (!/^(0x)?[0-9a-f]{40}$/i.test(contractAddr)) {
             return alert('Not a valid address.')
         }
-        
+
         return fetch(this.CONTRACT_AUTH_ROUTE + '/' + contractAddr, { method: 'get' }).then(res => {
             return res.text()
         })
@@ -170,7 +188,7 @@ class Eauth {
         if (!/^(0x)?[0-9a-f]{40}$/i.test(contractAddr)) {
             return alert('Not a valid address.')
         }
-        
+
         return fetch(this.CONTRACT_AUTH_ROUTE + '/' + contractAddr, { method: 'get' }).then(res => {
             return res.text()
         })
