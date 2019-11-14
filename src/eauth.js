@@ -1,3 +1,4 @@
+import WalletLink from "walletlink"
 import WalletConnector from './walletConnector'
 
 class Eauth {
@@ -28,6 +29,27 @@ class Eauth {
     }
 
     ethLogin(callback = () => { window.location.reload() }) {
+        if (typeof web3 !== 'undefined') {
+            console.log('web3 is detected.')
+        } else {
+            return alert('No web3 detected.')
+        }
+
+        web3.currentProvider.enable()
+        .then((accounts) => {
+            this.authStart(web3, accounts[0], callback)
+        })
+    }
+
+    walletLinkLogin(callback = () => { window.location.reload() }) {
+        const walletLink = new WalletLink({
+          appName: 'Eauth',
+          appLogoUrl: 'https://raw.githubusercontent.com/pelith/node-eauth-server/master/public/images/logo.png',
+        })
+
+        const ethereum = walletLink.makeWeb3Provider('https://mainnet.infura.io/v3/', 1)
+        const web3 = new Web3(ethereum)
+
         if (typeof web3 !== 'undefined') {
             console.log('web3 is detected.')
         } else {
