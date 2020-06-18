@@ -7,11 +7,30 @@ class Eauth {
         this.OAUTH_REDIRECT_URI = options.OAUTH_REDIRECT_URI
         this.OAUTH_STATE = options.OAUTH_STATE
 
+        this.ENS_ROUTE = options.ENS_ROUTE // domain + '/routeName'
         this.AUTH_ROUTE = options.AUTH_ROUTE // domain + '/routeName'
         this.CONTRACT_AUTH_ROUTE = options.CONTRACT_AUTH_ROUTE // domain + '/routeName'
         this.REDIRECT_URI = options.REDIRECT_URI
         this.AUTH_RESPONSE = null
         this.PREFIX = options.PREFIX ? options.PREFIX : ''
+    }
+
+    submitENS(ens) {
+        if (!/.*\.eth$/.test(ens)) {
+            return Promise.resolve(false)
+        }
+
+        return fetch(this.ENS_ROUTE + '/' + ens, { method: 'post' }).then(res => {
+            return res.json()
+        })
+        .then((result) => {
+            if (!result.success) {
+                alert(result.message)
+                return null
+            }
+
+            return result
+        })
     }
 
     oauthLogin() {
