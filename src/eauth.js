@@ -17,6 +17,7 @@ class Eauth {
 
     submitENS(ens) {
         if (!/.*\.eth$/.test(ens)) {
+            alert('ENS names should end with \'.eth\'.')
             return Promise.resolve(false)
         }
 
