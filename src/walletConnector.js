@@ -75,7 +75,7 @@ class WalletConnector {
         const data = this.PREFIX + message
         const msgParams = [
           convertUtf8ToHex(data),
-          '0xbc28ea04101f03ea7a94c1379bc3ab32e65e62d3' // Required
+          address,
         ]
 
         // Sign Typed Data
