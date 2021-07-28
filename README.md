@@ -1,18 +1,9 @@
-# Eauth.js
+# Eauth.js [![npm version](https://badge.fury.io/js/eauth.js.svg)](https://badge.fury.io/js/eauth.js)
 
 An interface to interact with Eauth for browsers.
-
-## Usage
-
-```
-npm install
-npm run build		# for eauth.js
-npm run build:prod	# for eauth.min.js
-```
 
 ## Browser
 
 ```
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/pelith/eauth.js/dist/eauth.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/eauth.js@1.0.0-alpha/dist/eauth.umd.production.min.js"></script>
 ```
-

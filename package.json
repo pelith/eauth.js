@@ -1,31 +1,59 @@
 {
   "name": "eauth.js",
-  "version": "1.1.3",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "webpack --config ./webpack.config.js  --mode development",
-    "build:prod": "webpack --config ./webpack.config.js  --mode production --output ./dist/eauth.min.js",
-    "serve": "npm run build & npm run build:prod & npx static-server dist/",
-    "dev": "nodemon --ignore dist/ --exec npm run serve"
-  },
-  "author": "gilg4mesh",
+  "version": "1.0.0-alpha",
   "license": "MIT",
-  "dependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/runtime": "^7.5.5",
-    "babel-loader": "^8.0.6",
-    "enc-utils": "^3.0.0",
-    "webpack": "^4.36.1"
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
   },
+  "scripts": {
+    "start": "tsdx watch --format cjs,esm,umd --name Eauth",
+    "build": "tsdx build --format cjs,esm,umd --name Eauth",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build --format cjs,esm,umd --name Eauth",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "author": "Pelith",
+  "module": "dist/eauth.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/eauth.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/eauth.esm.js",
+      "limit": "10 KB"
+    }
+  ],
   "devDependencies": {
-    "@babel/plugin-proposal-export-default-from": "^7.5.2",
-    "@babel/plugin-proposal-export-namespace-from": "^7.5.2",
-    "@babel/plugin-transform-runtime": "^7.5.5",
-    "core-js": "^3.1.4",
-    "nodemon": "^2.0.3",
-    "static-server": "^2.2.1",
-    "webpack-cli": "^3.3.6"
+    "@size-limit/preset-small-lib": "^5.0.2",
+    "husky": "^7.0.1",
+    "size-limit": "^5.0.2",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5",
+    "webpack-cli": "^4.7.2"
+  },
+  "dependencies": {
+    "web3-utils": "^1.4.0"
   }
 }
