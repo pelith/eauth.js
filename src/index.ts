@@ -42,8 +42,7 @@ class Eauth {
 
   submitENS(ens: string) {
     if (!/.*\.eth$/.test(ens)) {
-      alert("ENS names should end with '.eth'.");
-      return Promise.resolve(false);
+      throw Error('ENS names should end with \'.eth\'.');
     }
 
     return fetch(this.ENS_ROUTE + '/' + ens, { method: 'post' })
@@ -52,8 +51,7 @@ class Eauth {
       })
       .then(result => {
         if (!result.success) {
-          alert(result.message);
-          return null;
+          throw Error(result.message);
         }
 
         return result;
@@ -77,7 +75,8 @@ class Eauth {
 
   authStart(provider: any, account: string, callback: () => void) {
     if (!/^(0x)?[0-9a-f]{40}$/i.test(account)) {
-      return alert('Wallet not detected.');
+      this.ERROR = 'Not a valid address.';
+      return callback();
     }
 
     return fetch(this.AUTH_ROUTE + '/' + account, { method: 'get' })
@@ -171,7 +170,8 @@ class Eauth {
     callback: () => void
   ) {
     if (!/^(0x)?[0-9a-f]{40}$/i.test(contractAddr)) {
-      return alert('Not a valid address.');
+      this.ERROR = 'Not a valid address.';
+      return callback();
     }
 
     return fetch(this.CONTRACT_AUTH_ROUTE + '/' + contractAddr, {
@@ -199,8 +199,10 @@ class Eauth {
           data = utf8ToHex(prefixedRes);
         }
 
-        if (!/^[a-fA-F0-9]+$/.test(message))
-          return alert('Something went wrong, please try again later.');
+        if (!/^[a-fA-F0-9]+$/.test(message)) {
+          this.ERROR = 'Message error, please try again.';
+          return callback();
+        }
 
         const params = [data, account];
         provider.sendAsync(
@@ -247,7 +249,7 @@ class Eauth {
 
   getMessage(contractAddr: string) {
     if (!/^(0x)?[0-9a-f]{40}$/i.test(contractAddr)) {
-      return alert('Not a valid address.');
+      throw Error('Not a valid address.');
     }
 
     return fetch(this.CONTRACT_AUTH_ROUTE + '/' + contractAddr, {
@@ -258,7 +260,7 @@ class Eauth {
       })
       .then(message => {
         if (!/^[a-fA-F0-9]+$/.test(message))
-          return alert('Something went wrong, please try again later.');
+          throw Error('Something went wrong, please try again later.');
 
         return this.PREFIX + message;
       });
