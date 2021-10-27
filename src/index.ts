@@ -1,5 +1,3 @@
-import { utf8ToHex } from 'web3-utils';
-
 type Options = {
   OAUTH_CLIENT_ID: string;
   OAUTH_URL: string;
@@ -175,9 +173,6 @@ class Eauth {
     }
 
     return fetch(this.CONTRACT_AUTH_ROUTE + '/' + contractAddr, {
-      headers: {
-        'user-target': provider.isWalletConnect ? 'WalletConnect' : '',
-      },
       method: 'get',
     })
       .then(res => {
@@ -188,16 +183,9 @@ class Eauth {
         let message: any = null;
         let method = 'eth_signTypedData';
 
-        try {
-          message = JSON.parse(res)[1].value;
-          data = res;
-          data[1].value = this.PREFIX + message;
-        } catch (e) {
-          message = res;
-          const prefixedRes = this.PREFIX + res;
-          method = 'personal_sign';
-          data = utf8ToHex(prefixedRes);
-        }
+        data = JSON.parse(res);
+        message = data[1].value;
+        data[1].value = this.PREFIX + message;
 
         if (!/^[a-fA-F0-9]+$/.test(message)) {
           this.ERROR = 'Message error, please try again.';
@@ -223,11 +211,6 @@ class Eauth {
               return fetch(
                 this.CONTRACT_AUTH_ROUTE + '/' + message + '/' + signature,
                 {
-                  headers: {
-                    'user-target': provider.isWalletConnect
-                      ? 'WalletConnect'
-                      : '',
-                  },
                   method: 'post',
                 }
               )
