@@ -76,8 +76,12 @@ class Eauth {
       this.ERROR = 'Not a valid address.';
       return callback();
     }
-
-    return fetch(this.AUTH_ROUTE + '/' + account, { method: 'get' })
+    return fetch(this.AUTH_ROUTE + '/' + account, {
+        headers: {
+          'chainid': parseInt(provider.chainId)+'',
+        },
+        method: 'get'
+      })
       .then(res => {
         return res.text();
       })
@@ -104,7 +108,7 @@ class Eauth {
           domain: {
             name: 'Eauth',
             version: '1',
-            chainId: 1,
+            chainId: parseInt(provider.chainId),
             verifyingContract: '0x0000000000000000000000000000000000000000',
           },
           message: {
@@ -131,6 +135,9 @@ class Eauth {
 
             if (token !== null && signature !== null) {
               return fetch(this.AUTH_ROUTE + '/' + token + '/' + signature, {
+                headers: {
+                  'chainid': parseInt(provider.chainId)+'',
+                },
                 method: 'post',
               })
                 .then(res => {
